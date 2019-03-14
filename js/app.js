@@ -6,8 +6,20 @@ let List = ({
       type: Array
     }
   },
-  template: `<ul class="list-group w-25">
-              <li class="list-group-item" v-for="(item, index) in items" :key="index">
+  data: () => ({
+    filterMode: 'all'
+  }),
+  /*  filterMode === 'all' ? 'btn-primary' : 'btn-secondary' 
+ filterMode === 'bought' ? 'btn-primary' : 'btn-secondary' 
+ filterMode === 'notBought' ? 'btn-primary' : 'btn-secondary' */
+  template: `<div>
+            <div class="btn-group" role="group">
+              <button type="button" :class='filterMode === "all" ? "btn btn-primary" : "btn btn-secondary"' @click="filterMode = 'all'">All</button>
+              <button type="button" :class='filterMode === "bought" ? "btn btn-primary" : "btn btn-secondary"' @click="filterMode = 'bought'">Bought</button>
+              <button type="button" :class='filterMode === "notBought" ? "btn btn-primary" : "btn btn-secondary"' @click="filterMode = 'notBought'">Not bought</button>
+            </div>
+            <ul class="list-group w-25">
+              <li class="list-group-item" v-for="(item, index) in list" :key="index">
                 <div class="mr-5 w-25 d-inline-block"  @click="toggle(index)">
                   <input type="checkbox" v-model="item.bought"/>
                   {{ item.name }}
@@ -23,7 +35,7 @@ let List = ({
                   <button type="button" @click="deleteItem(index)" class="btn btn-danger">Supprimer</button>
                 </div>
               </li>
-            </ul>`,
+            </ul></div>`,
   methods: {
     deleteItem(index) {
       this.items.splice(index, 1)
@@ -31,6 +43,17 @@ let List = ({
 
     toggle(index) {
       this.items[index].bought = !this.items[index].bought
+    }
+  },
+
+  computed: {
+    list () {
+      if(this.filterMode === 'notBought')
+        return this.items.filter(i => !i.bought)
+      else if(this.filterMode === 'bought')
+        return this.items.filter(i => i.bought)
+      else
+        return this.items
     }
   }
 })
@@ -63,8 +86,28 @@ new Vue({
     budget: 50
   },
 
+  mounted() {
+    this.shopList = JSON.parse(window.localStorage.getItem('shopList')) || []
+    this.budget = JSON.parse(window.localStorage.getItem('budget')) || 50
+  },
+
+  watch: {
+    shopList: {
+      handler () {
+        window.localStorage.setItem('shopList', JSON.stringify(this.shopList))
+      },
+      deep: true
+    },
+
+    budget () {
+      window.localStorage.setItem('budget', JSON.stringify(this.budget)) 
+    }
+  },
+
   methods: {
     addItem () {
+      if(this.newItem === '')
+        return;
       this.shopList.push({
         name: this.newItem,
         bought: false,
@@ -80,7 +123,7 @@ new Vue({
     },
 
     alert() {
-      return this.total > this.budget 
+      return this.total > this.budget
     }
   },
 

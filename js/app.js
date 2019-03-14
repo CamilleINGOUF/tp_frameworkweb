@@ -13,7 +13,7 @@ let List = ({
  filterMode === 'bought' ? 'btn-primary' : 'btn-secondary' 
  filterMode === 'notBought' ? 'btn-primary' : 'btn-secondary' */
   template: `<div>
-            <div class="btn-group" role="group">
+            <div class="btn-group mb-3" role="group">
               <button type="button" :class='filterMode === "all" ? "btn btn-primary" : "btn btn-secondary"' @click="filterMode = 'all'">All</button>
               <button type="button" :class='filterMode === "bought" ? "btn btn-primary" : "btn btn-secondary"' @click="filterMode = 'bought'">Bought</button>
               <button type="button" :class='filterMode === "notBought" ? "btn btn-primary" : "btn btn-secondary"' @click="filterMode = 'notBought'">Not bought</button>

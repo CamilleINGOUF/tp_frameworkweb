@@ -11,15 +11,29 @@
 
   <div id="app">
     <h1>My Shopping list - Total : {{ total }}</h1>
-    
+    <div class="alert alert-danger w-25" role="alert" v-if="alert">
+      Fais gaffe à ton budget bordel !
+    </div>
+
+
     <div class="input-group mb-3 w-25">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Budget</span>
+      </div>
+      <input type="text" class="form-control" v-model="budget">
+      <div class="input-group-append">
+        <span class="input-group-text">€</span>
+      </div>
+    </div>
+    
+    <div class="input-group w-25">
       <input @keyup.enter="addItem" v-model="newItem" type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
       <div class="input-group-append">
         <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="addItem">Button</button>
       </div>
     </div>
     <autocomplete :items="shopList" :input="newItem"></autocomplete>
-    <list :items="shopList"></list>
+    <list :items="shopList" class="mt-3"></list>
   </div>
 
   <script src="https://unpkg.com/vue"></script>

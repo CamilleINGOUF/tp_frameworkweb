@@ -13,9 +13,9 @@ let List = ({
                   {{ item.name }}
                 </div>
                 <div class="input-group w-50 " v-if="item.bought">
-                  <input type="number" class="form-control" aria-describedby="basic-addon1" v-model="item.price">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">€</span>
+                  <input type="number" class="form-control" v-model="item.price">
+                  <div class="input-group-append">
+                    <span class="input-group-text">€</span>
                   </div>
                   </div>
 
@@ -37,7 +37,7 @@ let List = ({
 
 let Autocomplete = ({
   props: ['items', 'input'],
-  template: '<div v-if="input !== \'\'"><ul><li v-for="(item, index) in list" :key="index" @click="addItem(item)">{{ item.name }}</li></ul></div>',
+  template: '<div class="bg-secondary w-25" v-if="input !== \'\'"><ul><li v-for="(item, index) in list" :key="index" @click="addItem(item)">{{ item }}</li></ul></div>',
   computed: {
     list () {
       const list = this.items.filter(i => i.name.toLowerCase().includes(this.input.toLowerCase())).map(l => l.name)
@@ -46,7 +46,11 @@ let Autocomplete = ({
   },
   methods: {
     addItem(item) {
-      this.items.push({...item})
+      this.items.push({
+        name: item,
+        bought: false,
+        price: 0
+      })
     }
   }
 })
@@ -55,7 +59,8 @@ new Vue({
   el: '#app',
   data: {
     shopList: [],
-    newItem: ''
+    newItem: '',
+    budget: 50
   },
 
   methods: {
@@ -72,6 +77,10 @@ new Vue({
   computed: {
     total () {
       return this.shopList.reduce((acc, cur) => cur.bought ? acc += Number(cur.price) : acc, 0)
+    },
+
+    alert() {
+      return this.total > this.budget 
     }
   },
 

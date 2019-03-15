@@ -57,10 +57,14 @@ let List = ({
 
 let Autocomplete = ({
   props: ['items', 'input'],
+  data: () => ({
+    products : [{name: 'Bananes'},{name: 'Chocolat'},{name: 'Pâtes'},{name: 'Pesto'},{name: 'Capotes'}]
+  }),
   template: '<div class="bg-secondary w-25" v-if="input !== \'\'"><ul><li v-for="(item, index) in list" :key="index" @click="addItem(item)">{{ item }}</li></ul></div>',
   computed: {
     list () {
-      const list = this.items.filter(i => i.name.toLowerCase().includes(this.input.toLowerCase())).map(l => l.name)
+      const all = this.products.concat(this.items)
+      const list = all.filter(i => i.name.toLowerCase().includes(this.input.toLowerCase())).map(l => l.name)
       return list.filter((value, i, self) => self.indexOf(value) === i)
     }
   },

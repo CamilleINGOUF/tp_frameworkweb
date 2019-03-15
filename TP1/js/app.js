@@ -9,9 +9,6 @@ let List = ({
   data: () => ({
     filterMode: 'all'
   }),
-  /*  filterMode === 'all' ? 'btn-primary' : 'btn-secondary' 
- filterMode === 'bought' ? 'btn-primary' : 'btn-secondary' 
- filterMode === 'notBought' ? 'btn-primary' : 'btn-secondary' */
   template: `<div>
             <div class="btn-group mb-3" role="group">
               <button type="button" :class='filterMode === "all" ? "btn btn-primary" : "btn btn-secondary"' @click="filterMode = 'all'">All</button>
